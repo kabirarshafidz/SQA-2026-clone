@@ -1,0 +1,17 @@
+{
+  "accuracy": 0.86,
+  "precision": 0.0,
+  "recall": 0.0,
+  "f1_score": 0.0,
+  "pr_auc": 0.20068712155070334,
+  "confusion_matrix": [
+    [
+      258,
+      0
+    ],
+    [
+      42,
+      0
+    ]
+  ]
+}

@@ -18,15 +18,13 @@ else:
 with open(config_path, "r") as f:
     sweep_config = json.load(f)
 
-# the loop
-    # call the experiment runner from experiment.py
-
 for val in sweep_config["sweep_values"]:
     config = {}
 
-    with open(sweep_config["base_config", "r"]) as f:
+    with open(sweep_config["base_config"], "r") as f:
         config = json.load(f)
-        config[sweep_config["sweep_key"]] = val
+        
+    config[sweep_config["sweep_key"]] = val
     
     for seed in config["seeds"]:
         np.random.seed(seed)
@@ -35,7 +33,7 @@ for val in sweep_config["sweep_values"]:
                                                   anomaly_ratio=config["anomaly_ratio"],
                                                   label_noise=config["label_noise"])
         
-        X_train, X_test, y_train, y_test = train_test_split(X_df, y, test_size=0.3, stratify=y, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X_df, y, test_size=0.3, stratify=y, random_state=seed)
 
         scaler = StandardScaler()
         X_train_scaled = scaler.fit_transform(X_train)
@@ -45,22 +43,32 @@ for val in sweep_config["sweep_values"]:
             "X_train": X_train_scaled,
             "y_train": y_train,
             "X_test": X_test_scaled,
-            "y_test": y_test
+            "y_test": y_test,
         }
 
         for model_name in config["model_list"]:
-            config["model_name"] = model_name
+            run_config = dict(config) 
+            run_config["model_name"] = model_name
+            run_config["seed"] = seed
+
             metrics = run_one(config, data_bundles)
+
             print(f"Completed: model={model_name}, anomaly_ratio={val}, seed={seed}, metrics={metrics}")
             
-            base_name = f"../experiments/exp_model_name_{config["sweep_key"]}_{val}_seed{seed}/"
+            exp_dir = os.path.join(
+                "experiments",
+                f"exp_{model_name}_{sweep_config['sweep_key']}_{val}_seed{seed}",
+            )
+            os.makedirs(exp_dir, exist_ok=True)
 
-            with open(base_name + "config.json", "w") as f:
-                json.dump(config, f)
+            with open(os.path.join(exp_dir, "metrics.json"), "w") as f:
+                json.dump(metrics, f, indent=2)
 
-            with open(base_name + "metrics.json", "w") as f:
-                json.dump(metrics, f)
+            with open(os.path.join(exp_dir, "config.json"), "w") as f:
+                json.dump(run_config, f, indent=2)
 
-            with open(base_name + "confusion_matrix.csv", "w") as f:
-                for row in metrics["confusion_matrix"]:
-                    f.write(",".join([str(x) for x in row]) + "\n")
+            cm = metrics.get("confusion_matrix", None)
+            if cm is not None:
+                with open(os.path.join(exp_dir, "confusion_matrix.csv"), "w") as f:
+                    for row in cm:
+                        f.write(",".join(map(str, row)) + "\n")

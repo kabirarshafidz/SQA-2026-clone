@@ -1,8 +1,8 @@
 import numpy as np
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
-from qiskit.library import ZZFeatureMap, PauliFeatureMap, ZFeatureMap, RealAmplitudes, TwoLocal
-from qiskit.optimization.algorithms import COBYLA, SPSA, ADAM
+from qiskit.circuit.library import ZZFeatureMap, PauliFeatureMap, ZFeatureMap, RealAmplitudes, TwoLocal
+from qiskit_algorithms.optimizers import COBYLA, SPSA, ADAM
 from qiskit import QuantumCircuit
 from qiskit.primitives import StatevectorEstimator
 from qiskit_machine_learning.neural_networks import EstimatorQNN
@@ -14,6 +14,7 @@ def create_svm_model():
 
 def create_rf_model():
     rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+    return rf_model
 
 def create_vqc_model_1():
     feature_map = ZZFeatureMap(feature_dimension=3, reps=2, entanglement='linear')
@@ -70,7 +71,7 @@ def create_vqc_model_2():
     return vqc
 
 def create_vqc_model_3():
-    feature_map = ZFeatureMap(feature_dimension=3, reps=2, entanglement='linear')
+    feature_map = ZFeatureMap(feature_dimension=3, reps=2)
     ansatz = RealAmplitudes(num_qubits=3, reps=2, entanglement='linear')
     qc = QuantumCircuit(3)
     qc.compose(feature_map, inplace=True)

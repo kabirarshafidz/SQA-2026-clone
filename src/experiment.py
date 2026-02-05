@@ -1,6 +1,6 @@
 # train and eval one model
-from models import get_model_by_name
-from metrics import compute_metrics
+from .models import get_model_by_name
+from .metrics import compute_metrics
 
 def run_one(config, data_bundles):
     # receive metadata
@@ -21,8 +21,11 @@ def run_one(config, data_bundles):
     y_scores = []
     if model_name == "svm":
         y_scores = model.decision_function(X_test)
-    else:
-        y_scores = model.predict_proba(X_test)[:, 1]
+    elif model_name == "random_forest":
+        y_scores = model.predict_proba(X_test)[:,1]
+    else: # for vqc models
+        y_scores = model.predict_proba(X_test)
+
 
     metrics = compute_metrics(y_test, y_pred, y_scores)
 

@@ -1,12 +1,19 @@
 # load configs
+import sys
+import os
+# Ensure repo root is on PYTHONPATH so `import src...` works when running this script directly
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+
 import json
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from src.experiment import run_one
 from src.data import generate_network_traffic_data, generate_network_traffic_data_2
-import sys
-import os
+from datetime import datetime
 
 # CLI: python scripts/run_experiments.py --config configs/sweep_anomaly_ratio.json
 if len(sys.argv) >= 3 and sys.argv[1] == "--config":
@@ -51,13 +58,19 @@ for val in sweep_config["sweep_values"]:
             run_config["model_name"] = model_name
             run_config["seed"] = seed
 
-            metrics = run_one(config, data_bundles)
+            print(f"Running: model={model_name}, anomaly_ratio={val}, seed={seed}")
+
+            metrics = run_one(run_config, data_bundles)
 
             print(f"Completed: model={model_name}, anomaly_ratio={val}, seed={seed}, metrics={metrics}")
-            
+
+            date = datetime.now().strftime("%Y%m%d_%H%M%S")
             exp_dir = os.path.join(
                 "experiments",
-                f"exp_{model_name}_{sweep_config['sweep_key']}_{val}_seed{seed}",
+                sweep_config["sweep_key"],     
+                str(val),                      
+                f"seed_{seed}",                
+                model_name                     
             )
             os.makedirs(exp_dir, exist_ok=True)
 
@@ -71,4 +84,4 @@ for val in sweep_config["sweep_values"]:
             if cm is not None:
                 with open(os.path.join(exp_dir, "confusion_matrix.csv"), "w") as f:
                     for row in cm:
-                        f.write(",".join(map(str, row)) + "\n")
+                        f.write(",".join(str(x) for x in row) + "\n")

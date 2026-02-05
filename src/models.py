@@ -122,3 +122,19 @@ def create_vqc_model_4():
     )
 
     return vqc
+
+def get_model_by_name(model_name):
+    if model_name == "svm":
+        return create_svm_model()
+    elif model_name == "random_forest":
+        return create_rf_model()
+    elif model_name == "vqc_1":
+        return create_vqc_model_1()
+    elif model_name == "vqc_2":
+        return create_vqc_model_2()
+    elif model_name == "vqc_3":
+        return create_vqc_model_3()
+    elif model_name == "vqc_4":
+        return create_vqc_model_4()
+    else:
+        raise ValueError(f"Unknown model name: {model_name}")

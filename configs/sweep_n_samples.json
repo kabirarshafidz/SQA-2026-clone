@@ -1,0 +1,5 @@
+{
+  "base_config": "configs/defaults.json",
+  "sweep_key": "n_samples",
+  "sweep_values": [300, 1000, 5000]
+}

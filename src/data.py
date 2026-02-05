@@ -1,4 +1,7 @@
-def generate_network_traffic_data(n_samples=1000, anomaly_ratio=0.5):
+import numpy as np
+import pandas as pd
+
+def generate_network_traffic_data(n_samples=1000, anomaly_ratio=0.5, label_noise=0.05):
     n_anomalous = int(n_samples * anomaly_ratio)
     n_normal = n_samples - n_anomalous
     
@@ -23,7 +26,7 @@ def generate_network_traffic_data(n_samples=1000, anomaly_ratio=0.5):
     
     return pd.DataFrame(X, columns=["packets_per_sec", "bytes_per_sec", "packet_drop_rate"]), y
 
-def generate_network_traffic_data_2(n_samples=1000, anomaly_ratio=0.05):
+def generate_network_traffic_data_2(n_samples=1000, anomaly_ratio=0.05, label_noise=0.05):
     n_anomalous = int(n_samples * anomaly_ratio)
     n_normal = n_samples - n_anomalous
     
@@ -45,7 +48,7 @@ def generate_network_traffic_data_2(n_samples=1000, anomaly_ratio=0.05):
     ])
     
     y = np.array([-1]*n_normal + [1]*n_anomalous)
-    flip_idx = np.random.choice(len(y), size=int(0.1*len(y)), replace=False)
+    flip_idx = np.random.choice(len(y), size=int(label_noise*len(y)), replace=False)
     y[flip_idx] *= -1
     
     return pd.DataFrame(X, columns=["packets_per_sec", "bytes_per_sec", "packet_drop_rate"]), y

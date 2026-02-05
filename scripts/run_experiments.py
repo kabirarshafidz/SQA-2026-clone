@@ -5,8 +5,17 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from src.experiment import run_one
 from src.data import generate_network_traffic_data, generate_network_traffic_data_2
+import sys
+import os
 
-with open("configs/sweep_anomaly_ratio.json", "r") as f:
+# CLI: python scripts/run_experiments.py --config configs/sweep_anomaly_ratio.json
+if len(sys.argv) >= 3 and sys.argv[1] == "--config":
+    config_path = sys.argv[2]
+else:
+    config_path = "configs/sweep_anomaly_ratio.json" # default
+
+
+with open(config_path, "r") as f:
     sweep_config = json.load(f)
 
 # the loop
@@ -43,4 +52,15 @@ for val in sweep_config["sweep_values"]:
             config["model_name"] = model_name
             metrics = run_one(config, data_bundles)
             print(f"Completed: model={model_name}, anomaly_ratio={val}, seed={seed}, metrics={metrics}")
+            
+            base_name = f"../experiments/exp_model_name_{config["sweep_key"]}_{val}_seed{seed}/"
 
+            with open(base_name + "config.json", "w") as f:
+                json.dump(config, f)
+
+            with open(base_name + "metrics.json", "w") as f:
+                json.dump(metrics, f)
+
+            with open(base_name + "confusion_matrix.csv", "w") as f:
+                for row in metrics["confusion_matrix"]:
+                    f.write(",".join([str(x) for x in row]) + "\n")

@@ -13,7 +13,7 @@ def compute_metrics(y_true, y_pred, y_scores):
         "recall": recall,
         "f1_score": f1,
         "pr_auc": pr_auc,
-        "confusion_matrix": confusion_matrix.tolist()  # convert to list for easier serialization
+        "confusion_matrix": confusion_matrix.tolist()
     }
 
     return metrics

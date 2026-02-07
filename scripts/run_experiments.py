@@ -21,7 +21,6 @@ if len(sys.argv) >= 3 and sys.argv[1] == "--config":
 else:
     config_path = "configs/sweep_anomaly_ratio.json" # default
 
-
 with open(config_path, "r") as f:
     sweep_config = json.load(f)
 

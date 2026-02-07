@@ -26,7 +26,6 @@ def run_one(config, data_bundles):
     else: # for vqc models
         y_scores = model.predict_proba(X_test)
 
-
     metrics = compute_metrics(y_test, y_pred, y_scores)
 
     # return metrics

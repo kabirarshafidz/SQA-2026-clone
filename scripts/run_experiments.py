@@ -8,6 +8,8 @@ if REPO_ROOT not in sys.path:
 
 
 import json
+import pickle
+import time
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
@@ -35,7 +37,7 @@ for val in sweep_config["sweep_values"]:
     for seed in config["seeds"]:
         np.random.seed(seed)
 
-        X_df, y = generate_network_traffic_data_2(n_samples=config["n_samples"],
+        X_df, y = generate_network_traffic_data(n_samples=config["n_samples"],
                                                   anomaly_ratio=config["anomaly_ratio"],
                                                   label_noise=config["label_noise"])
         
@@ -57,15 +59,20 @@ for val in sweep_config["sweep_values"]:
             run_config["model_name"] = model_name
             run_config["seed"] = seed
 
-            print(f"Running: model={model_name}, anomaly_ratio={val}, seed={seed}")
+            print(f"Running: model={model_name}, {sweep_config['sweep_key']}={val}, seed={seed}")
 
-            metrics = run_one(run_config, data_bundles)
+            start = time.time()
+            model, metrics = run_one(run_config, data_bundles)
+            end = time.time()
 
-            print(f"Completed: model={model_name}, anomaly_ratio={val}, seed={seed}, metrics={metrics}")
+            elapsed_time = end - start
+
+            print(f"Completed: model={model_name}, {sweep_config['sweep_key']}={val}, seed={seed}, metrics={metrics}")
+            print(f"Elapsed time: {elapsed_time:.2f} seconds")
 
             date = datetime.now().strftime("%Y%m%d_%H%M%S")
             exp_dir = os.path.join(
-                "experiments",
+                "experiments_2",
                 sweep_config["sweep_key"],     
                 str(val),                      
                 f"seed_{seed}",                
@@ -84,3 +91,22 @@ for val in sweep_config["sweep_values"]:
                 with open(os.path.join(exp_dir, "confusion_matrix.csv"), "w") as f:
                     for row in cm:
                         f.write(",".join(str(x) for x in row) + "\n")
+
+            if model_name.startswith("vqc_"):
+                model.to_dill(f"{exp_dir}/model.dill")
+            else:
+                with open(os.path.join(exp_dir, "model.pkl"), "wb") as f:
+                    pickle.dump(model, f)
+
+            ## same logic for loading later:
+            # import pickle
+            # from qiskit_machine_learning.algorithms import NeuralNetworkClassifier
+
+            # def load_model(exp_dir, model_name):
+            #     if model_name.startswith("vqc_"):
+            #         return NeuralNetworkClassifier.from_dill(
+            #             os.path.join(exp_dir, "model.dill")
+            #         )
+            #     else:
+            #         with open(os.path.join(exp_dir, "model.pkl"), "rb") as f:
+            #             return pickle.load(f)

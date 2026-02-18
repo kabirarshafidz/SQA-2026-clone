@@ -29,4 +29,4 @@ def run_one(config, data_bundles):
     metrics = compute_metrics(y_test, y_pred, y_scores)
 
     # return metrics
-    return metrics
+    return model, metrics

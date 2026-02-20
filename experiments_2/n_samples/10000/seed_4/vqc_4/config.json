@@ -1,0 +1,16 @@
+{
+  "n_samples": 10000,
+  "anomaly_ratio": 0.05,
+  "label_noise": 0.05,
+  "seeds": [
+    4
+  ],
+  "generator": "v1",
+  "model_list": [
+    "vqc_2",
+    "vqc_3",
+    "vqc_4"
+  ],
+  "model_name": "vqc_4",
+  "seed": 4
+}

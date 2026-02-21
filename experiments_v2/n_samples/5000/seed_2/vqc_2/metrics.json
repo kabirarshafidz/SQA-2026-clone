@@ -3,7 +3,7 @@
   "precision": 0.0,
   "recall": 0.0,
   "f1_score": 0.0,
-  "pr_auc": 0.11912887444723146,
+  "pr_auc": 0.10761623106599863,
   "confusion_matrix": [
     [
       1357,

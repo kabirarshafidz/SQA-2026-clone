@@ -19,5 +19,6 @@
     "vqc_4"
   ],
   "model_name": "random_forest",
-  "seed": 0
+  "seed": 0,
+  "training_time_seconds": 0.08092403411865234
 }

@@ -19,5 +19,6 @@
     "vqc_4"
   ],
   "model_name": "vqc_1",
-  "seed": 0
+  "seed": 0,
+  "training_time_seconds": 539.7448229789734
 }

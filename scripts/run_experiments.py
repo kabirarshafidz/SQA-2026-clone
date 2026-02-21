@@ -64,7 +64,7 @@ for val in sweep_config["sweep_values"]:
             run_config["model_name"] = model_name
             run_config["seed"] = seed
 
-            print(f"Running: model={model_name}, {sweep_config['sweep_key']}={val}, seed={seed}")
+            print(f"Running: model={model_name}, {sweep_config['sweep_key']}={val}, seed={seed}, data_gen={config['generator']}")
 
             start = time.time()
             model, metrics = run_one(run_config, data_bundles)
@@ -77,7 +77,7 @@ for val in sweep_config["sweep_values"]:
 
             date = datetime.now().strftime("%Y%m%d_%H%M%S")
             exp_dir = os.path.join(
-                "experiments",
+                "experiments_v2",
                 sweep_config["sweep_key"],     
                 str(val),                      
                 f"seed_{seed}",                

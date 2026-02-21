@@ -37,7 +37,12 @@ for val in sweep_config["sweep_values"]:
     for seed in config["seeds"]:
         np.random.seed(seed)
 
-        X_df, y = generate_network_traffic_data(n_samples=config["n_samples"],
+        if config["generator"] == "v1":
+            X_df, y = generate_network_traffic_data(n_samples=config["n_samples"],
+                                                  anomaly_ratio=config["anomaly_ratio"],
+                                                  label_noise=config["label_noise"])
+        else:
+            X_df, y = generate_network_traffic_data_2(n_samples=config["n_samples"],
                                                   anomaly_ratio=config["anomaly_ratio"],
                                                   label_noise=config["label_noise"])
         
@@ -65,14 +70,14 @@ for val in sweep_config["sweep_values"]:
             model, metrics = run_one(run_config, data_bundles)
             end = time.time()
 
-            elapsed_time = end - start
+            training_time = end - start
 
             print(f"Completed: model={model_name}, {sweep_config['sweep_key']}={val}, seed={seed}, metrics={metrics}")
-            print(f"Elapsed time: {elapsed_time:.2f} seconds")
+            print(f"Elapsed time: {training_time:.2f} seconds")
 
             date = datetime.now().strftime("%Y%m%d_%H%M%S")
             exp_dir = os.path.join(
-                "experiments_2",
+                "experiments",
                 sweep_config["sweep_key"],     
                 str(val),                      
                 f"seed_{seed}",                
@@ -84,6 +89,7 @@ for val in sweep_config["sweep_values"]:
                 json.dump(metrics, f, indent=2)
 
             with open(os.path.join(exp_dir, "config.json"), "w") as f:
+                run_config["training_time_seconds"] = training_time
                 json.dump(run_config, f, indent=2)
 
             cm = metrics.get("confusion_matrix", None)

@@ -23,7 +23,7 @@ cols = [
     "tp",
 ]
 
-def make_summary(experiments_root="experiments", summary_path="experiments/summary.csv"):
+def make_summary(experiments_root="experiments_v2", summary_path="experiments_v2/summary.csv"):
     # iterate over sweep_key directories
         # iterate over sweep_value directories
             # iterate over seed directories

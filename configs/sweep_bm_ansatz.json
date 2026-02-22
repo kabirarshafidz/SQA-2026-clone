@@ -1,0 +1,5 @@
+{
+  "default_config": "configs/bm_defaults.json",
+  "sweep_key": "ansatz",
+  "sweep_values": ["real_amplitudes", "two_local"]
+}

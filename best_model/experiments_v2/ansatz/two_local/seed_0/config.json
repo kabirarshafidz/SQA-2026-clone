@@ -1,0 +1,18 @@
+{
+  "feature_map": "z_feature_map",
+  "ansatz": "two_local",
+  "ansatz_depth": 2,
+  "optimizer": "adam",
+  "n_samples": 1000,
+  "anomaly_ratio": 0.05,
+  "label_noise": 0.05,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "generator": "v2",
+  "training_time_seconds": 396.34022402763367
+}

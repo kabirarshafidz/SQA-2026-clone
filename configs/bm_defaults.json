@@ -6,6 +6,6 @@
   "n_samples": 1000,
   "anomaly_ratio": 0.05,
   "label_noise": 0.05,
-  "seeds": [0, 1, 2, 3, 4],
+  "seeds": [4],
   "generator": "v2"
 }

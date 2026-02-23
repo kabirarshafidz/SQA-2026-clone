@@ -23,12 +23,12 @@ cols = [
     "tp",
 ]
 
-def make_summary(experiments_root="experiments_v2", summary_path="experiments_v2/summary.csv"):
+def make_summary(experiments_root="experiments_v1", summary_path="experiments_v1/summary.csv"):
     # iterate over sweep_key directories
         # iterate over sweep_value directories
             # iterate over seed directories
                 # iterate over model_name directories
-
+        
     for sweep_key in os.listdir(experiments_root):
         sweep_key_path = os.path.join(experiments_root, sweep_key)
         if not os.path.isdir(sweep_key_path):

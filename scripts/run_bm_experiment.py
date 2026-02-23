@@ -123,7 +123,7 @@ for val in sweep_config["sweep_values"]:
         print(f"Elapsed time: {training_time:.2f} seconds")
 
         exp_dir = os.path.join(
-            "best_model",
+            "best_model_experiment",
             "experiments_v2" if config["generator"] == "v2" else "experiments_v1",
             sweep_config["sweep_key"],     
             str(val),                      

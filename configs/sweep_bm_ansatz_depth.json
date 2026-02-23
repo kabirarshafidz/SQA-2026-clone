@@ -1,5 +1,5 @@
 {
   "base_config": "configs/bm_defaults.json",
   "sweep_key": "ansatz_depth",
-  "sweep_values": [1, 2, 3]
+  "sweep_values": [4]
 }

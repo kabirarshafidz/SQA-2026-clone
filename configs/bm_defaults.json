@@ -7,5 +7,5 @@
   "anomaly_ratio": 0.05,
   "label_noise": 0.05,
   "seeds": [0, 1, 2, 3, 4],
-  "generator": "v2"
+  "generator": "v1"
 }

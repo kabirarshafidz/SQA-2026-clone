@@ -18,7 +18,10 @@ from src.data import generate_network_traffic_data, generate_network_traffic_dat
 from src.ansatz import create_ansatz
 from src.feature_map import create_feature_map
 from src.optimizers import create_optimizer
-from datetime import datetime
+from qiskit import QuantumCircuit
+from qiskit.primitives import StatevectorEstimator
+from qiskit_machine_learning.neural_networks import EstimatorQNN
+from qiskit_machine_learning.algorithms.classifiers import NeuralNetworkClassifier
 
 # Best model: VQC_3
 # feature_map = ZFeatureMap(feature_dimension=3, reps=2)
@@ -30,9 +33,7 @@ from datetime import datetime
 #     weight_params=ansatz.parameters,
 #     estimator=estimator
 # )
-
 # optimizer = ADAM(maxiter=40, lr=0.1)
-
 # vqc = NeuralNetworkClassifier(
 #     neural_network=qnn,
 #     optimizer=optimizer,
@@ -98,7 +99,7 @@ for val in sweep_config["sweep_values"]:
             estimator=estimator
         )
 
-        optimizer = create_optimizer(config["optimizer"])
+        optimizer = create_optimizer(run_config["optimizer"])
 
         vqc = NeuralNetworkClassifier(
             neural_network=qnn,
@@ -110,7 +111,7 @@ for val in sweep_config["sweep_values"]:
         print(f"Running: model=VQC-3, {sweep_config['sweep_key']}={val}, seed={seed}, data_gen={run_config['generator']}")
 
         start = time.time()
-        model, metrics = run_one(run_config, data_bundles, model=vqc)
+        model, metrics = run_one(run_config, data_bundles, base_model=vqc)
         end = time.time()
 
         print(f"Run completed in {end - start:.2f} seconds")

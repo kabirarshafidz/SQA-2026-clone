@@ -5,6 +5,6 @@ def create_ansatz(ansatz_name, depth):
     if ansatz_name == "real_amplitudes":
         return RealAmplitudes(num_qubits=3, reps=depth, entanglement='linear')
     elif ansatz_name == "two_local":
-        return TwoLocal(num_qubits=3, reps=depth, entanglement='linear')
+        return TwoLocal(num_qubits=3, reps=2, rotation_blocks='ry', entanglement_blocks='cz', entanglement='linear')
     else:
         raise ValueError(f"Unknown ansatz name: {ansatz_name}")

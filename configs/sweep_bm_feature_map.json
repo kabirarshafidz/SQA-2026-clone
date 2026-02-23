@@ -1,5 +1,5 @@
 {
-  "default_config": "configs/bm_defaults.json",
+  "base_config": "configs/bm_defaults.json",
   "sweep_key": "feature_map",
   "sweep_values": ["z_feature_map", "zz_feature_map", "pauli_feature_map"]
 }

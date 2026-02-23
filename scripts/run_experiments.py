@@ -75,9 +75,8 @@ for val in sweep_config["sweep_values"]:
             print(f"Completed: model={model_name}, {sweep_config['sweep_key']}={val}, seed={seed}, metrics={metrics}")
             print(f"Elapsed time: {training_time:.2f} seconds")
 
-            date = datetime.now().strftime("%Y%m%d_%H%M%S")
             exp_dir = os.path.join(
-                "experiments_v2",
+                "experiments_v2" if config["generator"] == "v2" else "experiments_v1",
                 sweep_config["sweep_key"],     
                 str(val),                      
                 f"seed_{seed}",                

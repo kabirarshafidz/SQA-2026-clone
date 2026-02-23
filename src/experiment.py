@@ -2,7 +2,7 @@
 from .models import get_model_by_name
 from .metrics import compute_metrics
 
-def run_one(config, data_bundles):
+def run_one(config, data_bundles, model=None):
     # receive metadata
     model_name = config["model_name"]
     X_train = data_bundles["X_train"]

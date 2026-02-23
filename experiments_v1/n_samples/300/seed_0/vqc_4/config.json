@@ -11,13 +11,9 @@
   ],
   "generator": "v1",
   "model_list": [
-    "svm",
-    "random_forest",
-    "vqc_1",
-    "vqc_2",
-    "vqc_3",
     "vqc_4"
   ],
   "model_name": "vqc_4",
-  "seed": 0
+  "seed": 0,
+  "training_time_seconds": 29.146596908569336
 }
